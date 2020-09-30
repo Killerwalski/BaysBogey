@@ -1,5 +1,15 @@
 ﻿@page "/createcourse"
+@using AspNetMonsters.Blazor.Geolocation
+@inject LocationService  LocationService
 <h3>CreateCourse</h3>
+
+<h3>You are here</h3>
+<div>
+Lat: @location?.Latitude <br/>
+Long: @location?.Longitude <br />
+Accuracy: @location?.Accuracy <br />
+</div>
+
 
 <div>
     Section for adding media for course layout
@@ -18,5 +28,10 @@
     <button>Click to Set Pin GPS </button>
 </div>
 @code {
+    Location location;
 
+    protected override async Task OnInitializedAsync()
+    {
+        location = await LocationService.GetLocationAsync();
+    }
 }

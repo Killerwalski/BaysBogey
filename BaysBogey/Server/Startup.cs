@@ -13,6 +13,7 @@ using Microsoft.Extensions.Hosting;
 using System.Linq;
 using BaysBogey.Server.Data;
 using BaysBogey.Server.Models;
+using AspNetMonsters.Blazor.Geolocation;
 
 namespace BaysBogey.Server
 {
@@ -41,9 +42,10 @@ namespace BaysBogey.Server
 
             services.AddAuthentication()
                 .AddIdentityServerJwt();
-
             services.AddControllersWithViews();
             services.AddRazorPages();
+
+            services.AddScoped<LocationService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
