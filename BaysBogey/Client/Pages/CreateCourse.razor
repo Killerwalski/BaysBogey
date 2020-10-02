@@ -1,5 +1,5 @@
 ﻿@page "/createcourse"
-@using AspNetMonsters.Blazor.Geolocation
+@using AspNetMonsters.Blazor.Geolocation 
 @inject LocationService  LocationService
 <h3>CreateCourse</h3>
 
@@ -10,7 +10,10 @@ Long: @location?.Longitude <br />
 Accuracy: @location?.Accuracy <br />
 </div>
 
+Course Name: <input />
+<button>Create Course</button>
 
+<!-- Load the course here -->
 <div>
     Section for adding media for course layout
 </div>
