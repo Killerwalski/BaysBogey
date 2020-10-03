@@ -14,6 +14,7 @@ using System.Linq;
 using BaysBogey.Server.Data;
 using BaysBogey.Server.Models;
 using AspNetMonsters.Blazor.Geolocation;
+using BaysBogey.Server.Services;
 
 namespace BaysBogey.Server
 {
@@ -45,6 +46,7 @@ namespace BaysBogey.Server
             services.AddControllersWithViews();
             services.AddRazorPages();
 
+            services.AddScoped<IDataService, BaysBogeyDataService>();
             services.AddScoped<LocationService>();
         }
 

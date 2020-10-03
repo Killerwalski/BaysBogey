@@ -38,11 +38,12 @@ namespace BaysBogey.Server.Controllers
         [HttpPost]
         public void Post([FromBody] Course course)
         {
+            DataService.AddCourse(course);
         }
 
         // PUT api/<CourseController>/5
         [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
+        public void Put(string id, [FromBody] Course course)
         {
         }
 

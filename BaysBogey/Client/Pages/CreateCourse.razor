@@ -1,6 +1,5 @@
 ﻿@page "/createcourse"
 @using AspNetMonsters.Blazor.Geolocation 
-@inject LocationService  LocationService
 <h3>CreateCourse</h3>
 
 <h3>You are here</h3>
@@ -10,8 +9,17 @@ Long: @location?.Longitude <br />
 Accuracy: @location?.Accuracy <br />
 </div>
 
-Course Name: <input />
-<button>Create Course</button>
+
+
+<EditForm Model="@courseToCreate" OnValidSubmit="@HandleValidSubmit">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+    Course Name: 
+    <InputText id="courseName" @bind-Value="courseToCreate.Name" />
+    <button type="submit">Create Course</button>
+</EditForm>
+
+
 
 <!-- Load the course here -->
 <div>
@@ -30,11 +38,3 @@ Course Name: <input />
     <button>Click to Set Tee Box GPS</button>
     <button>Click to Set Pin GPS </button>
 </div>
-@code {
-    Location location;
-
-    protected override async Task OnInitializedAsync()
-    {
-        location = await LocationService.GetLocationAsync();
-    }
-}
