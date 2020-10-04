@@ -27,12 +27,23 @@ namespace BaysBogey.Tests
                 .ForContext<DataTests>();
 
             Configuration = new ConfigurationBuilder()
-                // .AddJsonFile("appsettings.json", true, true)
-                .AddJsonFile(Directory.GetParent(Directory.GetCurrentDirectory()).Parent.Parent.Parent.FullName + @"\BaysBogey\Server\appsettings.Development.json", false, true)
+                .AddJsonFile("appsettings.Development.json", false, true)
+                //.AddJsonFile(Directory.GetParent(Directory.GetCurrentDirectory()).Parent.Parent.Parent.FullName + @"\BaysBogey\Server\appsettings.Development.json", false, true)
                 .Build();
 
             DataService = new BaysBogeyDataService(Configuration, Logger);
         }
+
+        //TODO
+        // Update Course
+        // - Delete holes in course
+        // - Add Tee Boxes
+        // - Update Pin Location
+
+
+        // Delete Course
+
+
 
         [Fact]
         public async Task DataService_Gets_Course()

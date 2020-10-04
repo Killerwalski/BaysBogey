@@ -68,5 +68,9 @@ namespace BaysBogey.Server.Services
             }
         }
 
+        public Task UpdateCourse(Course course)
+        {
+            return Task.CompletedTask;
+        }
     }
 }

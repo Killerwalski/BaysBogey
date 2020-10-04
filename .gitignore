@@ -340,3 +340,4 @@ ASALocalRun/
 healthchecksdb
 BaysBogey/Server/appsettings.Development.json
 BaysBogey/Server/appsettings.Development.json
+BaysBogey.Tests/appsettings.Development.json

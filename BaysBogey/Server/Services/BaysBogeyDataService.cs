@@ -1,5 +1,6 @@
 ﻿using BaysBogey.Shared;
 using Microsoft.Extensions.Configuration;
+using MongoDB.Bson;
 using MongoDB.Driver;
 using Serilog;
 using System;
@@ -40,9 +41,17 @@ namespace BaysBogey.Server.Services
             return await course.FirstOrDefaultAsync();
         }
 
-        public Task<IEnumerable<Course>> GetCourses()
+        public async Task<IEnumerable<Course>> GetCourses()
         {
-            throw new NotImplementedException();
+            var filter = new BsonDocument();
+            var courses = await CourseCollection.FindAsync(filter);
+            return await courses.ToListAsync();
+        }
+
+        public async Task UpdateCourse(Course course)
+        {
+            var filter = Builders<Course>.Filter.Eq(c => c.Id, course.Id);
+            var result = await CourseCollection.ReplaceOneAsync(filter, course, new ReplaceOptions { IsUpsert = true });
         }
     }
 }
