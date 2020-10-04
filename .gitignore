@@ -338,3 +338,5 @@ ASALocalRun/
 
 # BeatPulse healthcheck temp database
 healthchecksdb
+BaysBogey/Server/appsettings.Development.json
+BaysBogey/Server/appsettings.Development.json
