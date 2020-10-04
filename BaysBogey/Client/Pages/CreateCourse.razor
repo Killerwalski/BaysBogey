@@ -1,49 +1,37 @@
 ﻿@page "/createcourse"
 @using AspNetMonsters.Blazor.Geolocation
 
-Choose Course to Modify or Create New Course
+<Row Margin="Margin.Is2" hidden="@hideInitialCards">
+    <Column ColumnSize="ColumnSize.IsHalf">
+        <Card Margin="Margin.Is4.FromBottom">
+            <CardHeader>
+                <CardTitle Size="4" Alignment="TextAlignment.Center">Create a New Golf Course</CardTitle>
+            </CardHeader>
+            <CardBody>
+                <Paragraph>Log a new course by walking or playing through it, marking the tee box and pin locations</Paragraph>
+                <Paragraph>Once you've saved the course, you can always go back and add new tee boxes, or update pin locations</Paragraph>
+                <Paragraph>This needs to be done before you can keep track of your rounds</Paragraph>
+            </CardBody>
+            <Button Color="Color.Primary" Clicked="CreateCourseDialog">Create Course</Button>
+        </Card>
+    </Column>
+    <Column ColumnSize="ColumnSize.IsHalf">
+        <Card Margin="Margin.Is4.FromBottom">
+            <CardHeader>
+                <CardTitle Size="4" Alignment="TextAlignment.Center">Update an Existing Golf Course</CardTitle>
+            </CardHeader>
+            <CardBody>
+                <Paragraph>Load a previously created golf course</Paragraph>
+                <Paragraph>Do this to add new tee boxes, update pin locations, or finish where you left off with an unfinished course.</Paragraph>
+            </CardBody>
+        </Card>
+    </Column>
+</Row>
 
-@if (existingCourses != null)
-{
-    <div>
-        Load Existing Course:
-        <select>
-            @foreach (var item in existingCourses)
-            {
-                <option>@item.Name</option>
-            }
-        </select>
-    </div>
-}
-
-<EditForm Model="@courseToCreate" OnValidSubmit="@HandleValidSubmit">
+<EditForm Model="@courseToCreate" OnValidSubmit="@HandleValidSubmit" hidden="@hideCreateCourseForm">
     <DataAnnotationsValidator />
     <Microsoft.AspNetCore.Components.Forms.ValidationSummary />
     Course Name:
     <InputText id="courseName" @bind-Value="courseToCreate.Name" />
     <button type="submit">Create Course</button>
 </EditForm>
-
-@*@if (loadedCourse != null)
-{
-    <div>
-        Display Group of holes, maybe accordian?
-    </div>
-}*@
-
-<div>
-    Section for adding media for course layout
-</div>
-<div>
-    Hole 1:
-    <br />
-    Tee Color:
-    <select>
-        <option>White</option>
-        <option>Blue</option>
-        <option>Yellow</option>
-        <option>Black</option>
-    </select>
-    <button>Click to Set Tee Box GPS</button>
-    <button>Click to Set Pin GPS </button>
-</div>

@@ -32,7 +32,7 @@ namespace BaysBogey.Tests
                 //.AddJsonFile(Directory.GetParent(Directory.GetCurrentDirectory()).Parent.Parent.Parent.FullName + @"\BaysBogey\Server\appsettings.Development.json", false, true)
                 .Build();
 
-            DataService = new BaysBogeyDataService(Configuration, Logger);
+            DataService = new FakeDataService(Configuration, Logger);
         }
 
         //TODO
@@ -43,7 +43,8 @@ namespace BaysBogey.Tests
             var course = await DataService.GetCourse("4c7065ed-73fe-465b-9900-1e14292ee2f0");
 
             var hole = course.Holes.Where(h => h.Number == 1).FirstOrDefault();
-            hole.TeeBoxes.Add("Yellow", new Location() { Latitude = 49, Longitude = 49, Accuracy = 1 });
+            if (!hole.TeeBoxes.ContainsKey("Yellow"))
+                hole.TeeBoxes.Add("Yellow", new Location() { Latitude = 49, Longitude = 49, Accuracy = 1 });
             
             await DataService.UpdateCourse(course);
         }

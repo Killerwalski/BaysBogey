@@ -1,5 +1,7 @@
 ﻿using AspNetMonsters.Blazor.Geolocation;
 using BaysBogey.Shared;
+using Microsoft.Extensions.Configuration;
+using Serilog;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,8 +13,14 @@ namespace BaysBogey.Server.Services
     {
         public List<Course> Courses;
 
-        public FakeDataService()
+        public IConfiguration Configuration;
+        public ILogger Logger;
+
+        public FakeDataService(IConfiguration configuration, ILogger logger)
         {
+            Configuration = configuration;
+            Logger = logger;
+
             Courses = new List<Course>();
         }
         public Task<Course> GetCourse(string id)
