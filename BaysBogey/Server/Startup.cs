@@ -15,6 +15,9 @@ using BaysBogey.Server.Data;
 using BaysBogey.Server.Models;
 using AspNetMonsters.Blazor.Geolocation;
 using BaysBogey.Server.Services;
+using Serilog;
+using Serilog.Core;
+using Serilog.Events;
 
 namespace BaysBogey.Server
 {
@@ -23,6 +26,14 @@ namespace BaysBogey.Server
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
+
+            Log.Logger = new LoggerConfiguration()
+              .MinimumLevel.Debug()
+              .MinimumLevel.Override("Microsoft", LogEventLevel.Warning)
+              .Enrich.FromLogContext()
+              .Enrich.WithProperty("App Name", "BaysBogey.Server")
+              .WriteTo.Console()
+                .CreateLogger();
         }
 
         public IConfiguration Configuration { get; }
@@ -46,7 +57,10 @@ namespace BaysBogey.Server
             services.AddControllersWithViews();
             services.AddRazorPages();
 
-            services.AddSingleton<IDataService, FakeDataService>();
+            services.AddSingleton((Serilog.ILogger)Log.Logger);
+
+
+            services.AddScoped<IDataService, BaysBogeyDataService>();
             services.AddScoped<LocationService>();
         }
 
@@ -65,6 +79,7 @@ namespace BaysBogey.Server
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
+            app.UseSerilogRequestLogging();
 
             app.UseHttpsRedirection();
             app.UseBlazorFrameworkFiles();

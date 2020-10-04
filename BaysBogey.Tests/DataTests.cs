@@ -6,6 +6,7 @@ using Serilog;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Threading.Tasks;
 using Xunit;
 using Xunit.Abstractions;
@@ -36,6 +37,16 @@ namespace BaysBogey.Tests
 
         //TODO
         // Update Course
+        [Fact]
+        public async Task DataService_Updates_Course()
+        {
+            var course = await DataService.GetCourse("4c7065ed-73fe-465b-9900-1e14292ee2f0");
+
+            var hole = course.Holes.Where(h => h.Number == 1).FirstOrDefault();
+            hole.TeeBoxes.Add("Yellow", new Location() { Latitude = 49, Longitude = 49, Accuracy = 1 });
+            
+            await DataService.UpdateCourse(course);
+        }
         // - Delete holes in course
         // - Add Tee Boxes
         // - Update Pin Location
