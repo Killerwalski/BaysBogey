@@ -20,22 +20,22 @@ namespace BaysBogey.Server.Services
             Configuration = configuration;
             Logger = logger;
 
-            var connectionString = Configuration["BrawlhallaDatabaseSettings:ConnectionString"];
-            var databaseName = Configuration["BrawlhallaDatabaseSettings:DatabaseName"];
-            var collectionName = Configuration["BrawlhallaDatabaseSettings:CollectionName"];
+            var connectionString = Configuration["DatabaseSettings:AtlasConnectionString"];
+            var databaseName = Configuration["DatabaseSettings:DatabaseName"];
+            var collectionName = Configuration["DatabaseSettings:CollectionName"];
 
             var client = new MongoClient(connectionString);
             var database = client.GetDatabase(databaseName);
             CourseCollection = database.GetCollection<Course>(collectionName);
         }
-        public void AddCourse(Course course)
+        public async Task AddCourse(Course course)
         {
-            
+            await CourseCollection.InsertOneAsync(course);
         }
 
         public async Task<Course> GetCourse(string id)
         {
-            var filter = Builders<Course>.Filter.Eq(c => c.Id == id, true);
+            var filter = Builders<Course>.Filter.Eq(c => c.Id, id);
             var course = await CourseCollection.FindAsync(filter);
             return await course.FirstOrDefaultAsync();
         }

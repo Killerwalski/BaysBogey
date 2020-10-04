@@ -6,6 +6,7 @@
 
   <ItemGroup>
     <PackageReference Include="AspNetMonsters.Blazor.Geolocation" Version="0.5.0-preview1" />
+    <PackageReference Include="MongoDB.Bson" Version="2.11.2" />
   </ItemGroup>
 
 </Project>

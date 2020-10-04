@@ -1,7 +1,10 @@
+using AspNetMonsters.Blazor.Geolocation;
 using BaysBogey.Server.Services;
+using BaysBogey.Shared;
 using Microsoft.Extensions.Configuration;
 using Serilog;
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
 using Xunit;
@@ -25,16 +28,37 @@ namespace BaysBogey.Tests
 
             Configuration = new ConfigurationBuilder()
                 // .AddJsonFile("appsettings.json", true, true)
-                .AddJsonFile(Directory.GetParent(Directory.GetCurrentDirectory()).Parent.Parent.Parent.FullName + @"\BaysBogey.Server\appsettings.Development.json", false, true)
+                .AddJsonFile(Directory.GetParent(Directory.GetCurrentDirectory()).Parent.Parent.Parent.FullName + @"\BaysBogey\Server\appsettings.Development.json", false, true)
                 .Build();
 
             DataService = new BaysBogeyDataService(Configuration, Logger);
         }
+
         [Fact]
         public async Task DataService_Gets_Course()
         {
-            var course = await DataService.GetCourse("hi");
+            var course = await DataService.GetCourse("4c7065ed-73fe-465b-9900-1e14292ee2f0");
             Assert.NotNull(course);
+            Logger.Information("Found Course: " + course.Name);
+        }
+
+        [Fact]
+        public async Task DataService_Inserts_Course()
+        {
+            var course = new Course()
+            {
+                Name = "Hog Neck Executive",
+                Holes = new List<Hole>()
+            };
+            course.Id = Guid.NewGuid().ToString();
+            var hole = new Hole();
+            hole.Number = 1;
+            hole.TeeBoxes = new Dictionary<string, Location>();
+            hole.TeeBoxes.Add("Blue", new Location() { Latitude = 50, Longitude = 50, Accuracy = 1 });
+            hole.Pin = new Location() { Latitude = 51, Longitude = 51, Accuracy = 1 };
+            course.Holes.Add(hole);
+
+            await DataService.AddCourse(course);
         }
     }
 }

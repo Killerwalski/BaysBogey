@@ -44,9 +44,10 @@ namespace BaysBogey.Server.Services
             return await Task.FromResult(Courses);
         }
 
-        public void AddCourse(Course course)
+        public Task AddCourse(Course course)
         {
             Courses.Add(course);
+            return Task.CompletedTask;
         }
 
         public void UpdateHole(string courseId, Hole hole)
