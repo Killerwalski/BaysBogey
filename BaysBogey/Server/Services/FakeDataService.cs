@@ -13,7 +13,7 @@ namespace BaysBogey.Server.Services
 
         public FakeDataService()
         {
-            Courses = new List<Course>();
+
         }
         public Task<Course> GetCourse(string id)
         {
@@ -39,10 +39,9 @@ namespace BaysBogey.Server.Services
             return Task.FromResult(course);
         }
 
-        public IEnumerable<Course> GetCourses()
+        public async Task<IEnumerable<Course>> GetCourses()
         {
-            var courses = new List<Course>();
-            return courses;
+            return await Task.FromResult(Courses);
         }
 
         public void AddCourse(Course course)
@@ -67,5 +66,6 @@ namespace BaysBogey.Server.Services
                 course.Holes.Add(hole);
             }
         }
+
     }
 }

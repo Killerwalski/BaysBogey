@@ -10,5 +10,6 @@ namespace BaysBogey.Server.Services
     {
         public Task<Course> GetCourse(string id);
         void AddCourse(Course course);
+        Task<IEnumerable<Course>> GetCourses();
     }
 }

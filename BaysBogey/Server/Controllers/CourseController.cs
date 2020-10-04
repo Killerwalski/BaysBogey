@@ -22,9 +22,9 @@ namespace BaysBogey.Server.Controllers
 
         // GET: api/<CourseController>
         [HttpGet]
-        public IEnumerable<string> GetAll()
+        public async Task<IEnumerable<Course>> GetAllAsync()
         {
-            return new List<string>();
+            return await DataService.GetCourses();
         }
 
         // GET api/<CourseController>/5

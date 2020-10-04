@@ -46,7 +46,7 @@ namespace BaysBogey.Server
             services.AddControllersWithViews();
             services.AddRazorPages();
 
-            services.AddScoped<IDataService, BaysBogeyDataService>();
+            services.AddSingleton<IDataService, FakeDataService>();
             services.AddScoped<LocationService>();
         }
 

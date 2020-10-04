@@ -17,5 +17,10 @@ namespace BaysBogey.Server.Services
         {
             return null;
         }
+
+        public Task<IEnumerable<Course>> GetCourses()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

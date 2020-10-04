@@ -1,34 +1,49 @@
 ﻿@page "/createcourse"
-@using AspNetMonsters.Blazor.Geolocation 
+@using AspNetMonsters.Blazor.Geolocation
 <h3>CreateCourse</h3>
 
 <h3>You are here</h3>
 <div>
-Lat: @location?.Latitude <br/>
-Long: @location?.Longitude <br />
-Accuracy: @location?.Accuracy <br />
+    Lat: @location?.Latitude <br />
+    Long: @location?.Longitude <br />
+    Accuracy: @location?.Accuracy <br />
 </div>
 
+@if (existingCourses != null)
+{
+    <div>
+    Load Existing Course:
+    <select>
+        @foreach (var item in existingCourses)
+        {
+            <option>@item.Name</option>
+        }
+    </select>
+</div>
+}
 
 
 <EditForm Model="@courseToCreate" OnValidSubmit="@HandleValidSubmit">
     <DataAnnotationsValidator />
-    <ValidationSummary />
-    Course Name: 
+    <Microsoft.AspNetCore.Components.Forms.ValidationSummary />
+    Course Name:
     <InputText id="courseName" @bind-Value="courseToCreate.Name" />
     <button type="submit">Create Course</button>
 </EditForm>
 
-
-
-<!-- Load the course here -->
+@if (loadedCourse != null)
+{
+    <div>
+        Display Group of holes, maybe accordian?
+        </div>
+}
 <div>
     Section for adding media for course layout
 </div>
 <div>
     Hole 1:
     <br />
-        Tee Color:
+    Tee Color:
     <select>
         <option>White</option>
         <option>Blue</option>

@@ -1,14 +1,13 @@
-using System;
-using System.Net.Http;
-using System.Collections.Generic;
-using System.Threading.Tasks;
-using System.Text;
+using AspNetMonsters.Blazor.Geolocation;
+using Blazorise;
+using Blazorise.Bootstrap;
+using Blazorise.Icons.FontAwesome;
 using Microsoft.AspNetCore.Components.WebAssembly.Authentication;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
-using AspNetMonsters.Blazor.Geolocation;
+using System;
+using System.Net.Http;
+using System.Threading.Tasks;
 
 namespace BaysBogey.Client
 {
@@ -29,7 +28,20 @@ namespace BaysBogey.Client
             builder.Services.AddScoped<LocationService>();
             builder.Services.AddApiAuthorization();
 
-            await builder.Build().RunAsync();
+            builder.Services
+                  .AddBlazorise(options =>
+                  {
+                      options.ChangeTextOnKeyPress = true;
+                  })
+                .AddBootstrapProviders()
+                .AddFontAwesomeIcons();
+            var host = builder.Build();
+
+            host.Services
+              .UseBootstrapProviders()
+              .UseFontAwesomeIcons();
+
+            await host.RunAsync();
         }
     }
 }
