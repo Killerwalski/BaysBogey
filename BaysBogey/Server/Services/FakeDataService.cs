@@ -13,7 +13,7 @@ namespace BaysBogey.Server.Services
 
         public FakeDataService()
         {
-
+            Courses = new List<Course>();
         }
         public Task<Course> GetCourse(string id)
         {

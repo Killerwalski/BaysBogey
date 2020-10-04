@@ -24,7 +24,8 @@ namespace BaysBogey.Server.Controllers
         [HttpGet]
         public async Task<IEnumerable<Course>> GetAllAsync()
         {
-            return await DataService.GetCourses();
+            var courses = await DataService.GetCourses();
+            return courses;
         }
 
         // GET api/<CourseController>/5
