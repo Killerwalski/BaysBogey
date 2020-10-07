@@ -49,10 +49,10 @@
     <Row Margin="Margin.Is4" hidden="@hideLoadCourseForm">
         <Dropdown>
             <DropdownToggle Color="Color.Primary">Select Existing Course</DropdownToggle>
-            <DropdownMenu >
+            <DropdownMenu>
                 @foreach (var item in existingCourses)
                 {
-                    <DropdownItem Value="item.Id" Clicked="@ExistingCourseChosen"> @item.Name </DropdownItem>
+                    <DropdownItem Clicked="@(e => ExistingCourseChosen(item.Id))"> @item.Name </DropdownItem>
                 }
             </DropdownMenu>
         </Dropdown>
@@ -68,18 +68,44 @@
                     <CardTitle Size="4" Alignment="TextAlignment.Center">@loadedCourse.Name</CardTitle>
                 </CardHeader>
                 <CardBody>
+                    <Field Horizontal="true">
+                        <FieldLabel ColumnSize="ColumnSize.Is2">Select Hole</FieldLabel>
+                        <FieldBody>
+                            <Select TValue="int">
+                                @foreach (var hole in loadedCourse.Holes)
+                                {
+                                    <SelectItem Value="hole.Number" @onchange="@(e => HoleSelected(hole))">Hole: @hole.Number</SelectItem>
+                                }
+                            </Select>
+                        </FieldBody>
+                            <Button Clicked="AddNewHole" Block="true">Add new Hole</Button>
+                    </Field>
                 </CardBody>
             </Card>
         </Column>
-        <Column ColumnSize="ColumnSize.IsHalf">
+        @if (currentHole != null)
+        {
+            <Column ColumnSize="ColumnSize.IsHalf">
             <Card Margin="Margin.Is4.FromBottom">
                 <CardHeader>
-                    <CardTitle Size="4" Alignment="TextAlignment.Center">Hole Details</CardTitle>
+                    <CardTitle Size="4" Alignment="TextAlignment.Center">Hole @currentHole.Number Details</CardTitle>
                 </CardHeader>
                 <CardBody>
-                    <Paragraph>Hole 1 etc </Paragraph>
+                    <Field Horizontal="true">
+                        <FieldLabel ColumnSize="ColumnSize.Is2">Select Tee Box</FieldLabel>
+                        <FieldBody ColumnSize="ColumnSize.Is4">
+                            <Select TValue="string" Multiple="true">
+                                <SelectItem Value="@("Red")">Red</SelectItem>
+                                <SelectItem Value="@("White")">White</SelectItem>
+                                <SelectItem Value="@("Blue")">Blue</SelectItem>
+                                <SelectItem Value="@("Yellow")">Yellow</SelectItem>
+                                <SelectItem Value="@("Black")">Black</SelectItem>
+                            </Select>
+                        </FieldBody>
+                    </Field>
                 </CardBody>
             </Card>
         </Column>
+        }
     </Row>
 }

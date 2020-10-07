@@ -28,7 +28,7 @@ namespace BaysBogey.Server.Controllers
             return courses;
         }
 
-        // GET api/<CourseController>/5
+        // GET api/<CourseController>/abc
         [HttpGet("{id}")]
         public async Task<Course> Get(string id)
         {

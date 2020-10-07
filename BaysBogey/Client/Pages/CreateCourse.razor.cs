@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 using Blazorise;
 using System.Diagnostics;
 using Microsoft.AspNetCore.Components.Web;
+using MongoDB.Bson.Serialization.Serializers;
 
 namespace BaysBogey.Client.Pages
 {
@@ -17,6 +18,7 @@ namespace BaysBogey.Client.Pages
     {
         [Inject] protected LocationService LocationService { get; set; }
         [Inject] protected HttpClient Http { get; set; }
+        [Parameter] public EventCallback CourseChosenCallback { get; set;}
         protected bool hideInitialCards { get; set;}
         protected bool hideCreateCourseForm { get; set;}
         protected bool hideLoadCourseForm { get; set; }
@@ -25,6 +27,7 @@ namespace BaysBogey.Client.Pages
         protected Course courseToCreate { get; set; }
         protected Course loadedCourse { get; set; }
         protected List<Course> existingCourses { get; set;}
+        protected Hole currentHole { get; set; }
         protected override async Task OnInitializedAsync()
         {
             hideCreateCourseForm = true;
@@ -61,10 +64,25 @@ namespace BaysBogey.Client.Pages
             StateHasChanged();
         }
 
-        protected async Task ExistingCourseChosen()
+        protected async Task ExistingCourseChosen(string id)
         {
             Debug.WriteLine("Existing cours eclicked");
+            loadedCourse = await Http.GetFromJsonAsync<Course>(Http.BaseAddress + "api/Course/" + id);
+            hideLoadCourseForm = true;
+            hideModifyCourseForm = false;
             StateHasChanged();
+        }
+
+        protected async Task AddNewHole()
+        {
+            currentHole = new Hole();
+            currentHole.Number = loadedCourse.Holes.Count + 1;
+            currentHole.TeeBoxes = new Dictionary<string, Location>();
+        }
+
+        protected async Task HoleSelected(Hole hole)
+        {
+            currentHole = loadedCourse.Holes.Where(x => x.Number == hole.Number).FirstOrDefault();
         }
     }
 }
