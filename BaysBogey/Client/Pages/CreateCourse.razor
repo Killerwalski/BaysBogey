@@ -3,7 +3,7 @@
 
 <Row Margin="Margin.Is2" hidden="@hideInitialCards">
     <Column ColumnSize="ColumnSize.IsHalf">
-        <Card Margin="Margin.Is4.FromBottom">
+        <Card Margin="Margin.Is4.FromBottom" Style="height: 100%; flex: 1">
             <CardHeader>
                 <CardTitle Size="4" Alignment="TextAlignment.Center">Create a New Golf Course</CardTitle>
             </CardHeader>
@@ -12,11 +12,13 @@
                 <Paragraph>Once you've saved the course, you can always go back and add new tee boxes, or update pin locations</Paragraph>
                 <Paragraph>This needs to be done before you can keep track of your rounds</Paragraph>
             </CardBody>
-            <Button Color="Color.Primary" Clicked="CreateCourseDialog">Create Course</Button>
+            <CardBody Style="display: flex; justify-content: flex-end;">
+                <Button Color="Color.Primary" Block="true" Clicked="CreateCourseDialog">Create Course</Button>
+            </CardBody>
         </Card>
     </Column>
     <Column ColumnSize="ColumnSize.IsHalf">
-        <Card Margin="Margin.Is4.FromBottom">
+        <Card Margin="Margin.Is4.FromBottom" Style="height: 100%; flex: 1">
             <CardHeader>
                 <CardTitle Size="4" Alignment="TextAlignment.Center">Update an Existing Golf Course</CardTitle>
             </CardHeader>
@@ -24,14 +26,60 @@
                 <Paragraph>Load a previously created golf course</Paragraph>
                 <Paragraph>Do this to add new tee boxes, update pin locations, or finish where you left off with an unfinished course.</Paragraph>
             </CardBody>
+            <CardBody Style="display: flex; justify-content: flex-end;">
+                <Button Color="Color.Secondary" Block="true" Clicked="LoadCourseDialog">Load Existing Course </Button>
+            </CardBody>
         </Card>
     </Column>
 </Row>
+<Row Margin="Margin.Is2" hidden="@hideCreateCourseForm">
+    <Card Margin="Margin.Is4.FromBottom">
+        <EditForm Model="@courseToCreate" OnValidSubmit="@HandleValidSubmit">
+            <DataAnnotationsValidator />
+            <Microsoft.AspNetCore.Components.Forms.ValidationSummary />
+            Course Name:
+            <InputText id="courseName" @bind-Value="courseToCreate.Name" />
+            <button type="submit">Create Course</button>
+        </EditForm>
+    </Card>
+</Row>
 
-<EditForm Model="@courseToCreate" OnValidSubmit="@HandleValidSubmit" hidden="@hideCreateCourseForm">
-    <DataAnnotationsValidator />
-    <Microsoft.AspNetCore.Components.Forms.ValidationSummary />
-    Course Name:
-    <InputText id="courseName" @bind-Value="courseToCreate.Name" />
-    <button type="submit">Create Course</button>
-</EditForm>
+@if (existingCourses != null)
+{
+    <Row Margin="Margin.Is4" hidden="@hideLoadCourseForm">
+        <Dropdown>
+            <DropdownToggle Color="Color.Primary">Select Existing Course</DropdownToggle>
+            <DropdownMenu >
+                @foreach (var item in existingCourses)
+                {
+                    <DropdownItem Value="item.Id" Clicked="@ExistingCourseChosen"> @item.Name </DropdownItem>
+                }
+            </DropdownMenu>
+        </Dropdown>
+    </Row>
+}
+
+@if (loadedCourse != null)
+{
+    <Row Margin="Margin.Is4" hidden="@hideModifyCourseForm">
+        <Column ColumnSize="ColumnSize.IsHalf">
+            <Card Margin="Margin.Is4.FromBottom">
+                <CardHeader>
+                    <CardTitle Size="4" Alignment="TextAlignment.Center">@loadedCourse.Name</CardTitle>
+                </CardHeader>
+                <CardBody>
+                </CardBody>
+            </Card>
+        </Column>
+        <Column ColumnSize="ColumnSize.IsHalf">
+            <Card Margin="Margin.Is4.FromBottom">
+                <CardHeader>
+                    <CardTitle Size="4" Alignment="TextAlignment.Center">Hole Details</CardTitle>
+                </CardHeader>
+                <CardBody>
+                    <Paragraph>Hole 1 etc </Paragraph>
+                </CardBody>
+            </Card>
+        </Column>
+    </Row>
+}

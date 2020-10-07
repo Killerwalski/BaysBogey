@@ -12,5 +12,6 @@ namespace BaysBogey.Shared
         [Required]
         public string Name { get; set; }
         public List<Hole> Holes { get; set; }
+        public DateTime LastUpdated { get; set;}
     }
 }

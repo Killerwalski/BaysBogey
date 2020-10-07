@@ -8,6 +8,8 @@ using System.Net.Http;
 using System.Net.Http.Json;
 using System.Threading.Tasks;
 using Blazorise;
+using System.Diagnostics;
+using Microsoft.AspNetCore.Components.Web;
 
 namespace BaysBogey.Client.Pages
 {
@@ -17,6 +19,8 @@ namespace BaysBogey.Client.Pages
         [Inject] protected HttpClient Http { get; set; }
         protected bool hideInitialCards { get; set;}
         protected bool hideCreateCourseForm { get; set;}
+        protected bool hideLoadCourseForm { get; set; }
+        protected bool hideModifyCourseForm { get; set;}
         protected Location location { get; set; }
         protected Course courseToCreate { get; set; }
         protected Course loadedCourse { get; set; }
@@ -24,6 +28,8 @@ namespace BaysBogey.Client.Pages
         protected override async Task OnInitializedAsync()
         {
             hideCreateCourseForm = true;
+            hideModifyCourseForm = true;
+            hideLoadCourseForm = true;
 
             courseToCreate = new Course();
             location = await LocationService.GetLocationAsync();
@@ -32,8 +38,12 @@ namespace BaysBogey.Client.Pages
 
         protected async Task HandleValidSubmit()
         {
+            courseToCreate.LastUpdated = DateTime.Now;
             await Http.PostAsJsonAsync(Http.BaseAddress + "api/Course", courseToCreate);
             existingCourses = await Http.GetFromJsonAsync<List<Course>>(Http.BaseAddress + "api/Course");
+            loadedCourse = courseToCreate;
+            hideCreateCourseForm = true;
+            hideModifyCourseForm = false;
             StateHasChanged();
         }
 
@@ -41,6 +51,19 @@ namespace BaysBogey.Client.Pages
         {
             hideInitialCards = true;
             hideCreateCourseForm = false;
+            StateHasChanged();
+        }
+
+        protected async Task LoadCourseDialog()
+        {
+            hideInitialCards = true;
+            hideLoadCourseForm = false;
+            StateHasChanged();
+        }
+
+        protected async Task ExistingCourseChosen()
+        {
+            Debug.WriteLine("Existing cours eclicked");
             StateHasChanged();
         }
     }
