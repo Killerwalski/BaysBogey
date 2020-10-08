@@ -62,50 +62,75 @@
 @if (loadedCourse != null)
 {
     <Row Margin="Margin.Is4" hidden="@hideModifyCourseForm">
-        <Column ColumnSize="ColumnSize.IsHalf">
+        <Column ColumnSize="ColumnSize.Is3">
             <Card Margin="Margin.Is4.FromBottom">
                 <CardHeader>
                     <CardTitle Size="4" Alignment="TextAlignment.Center">@loadedCourse.Name</CardTitle>
                 </CardHeader>
                 <CardBody>
                     <Field Horizontal="true">
-                        <FieldLabel ColumnSize="ColumnSize.Is2">Select Hole</FieldLabel>
                         <FieldBody>
-                            <Select TValue="int">
+                            <Select TValue="int" @bind-SelectedValue="@selectedHoleNumber">
+                                <SelectItem Value="4">DUMMY</SelectItem>
                                 @foreach (var hole in loadedCourse.Holes)
                                 {
-                                    <SelectItem Value="hole.Number" @onchange="@(e => HoleSelected(hole))">Hole: @hole.Number</SelectItem>
+                                    <SelectItem Value="hole.Number">Hole: @hole.Number</SelectItem>
                                 }
                             </Select>
                         </FieldBody>
-                            <Button Clicked="AddNewHole" Block="true">Add new Hole</Button>
                     </Field>
+                    <Button Clicked="HoleSelected" Color="Color.Primary" Block="true">Edit Hole</Button>
+                    <Button Clicked="AddNewHole" Color="Color.Primary" Block="true">Add new Hole</Button>
                 </CardBody>
             </Card>
         </Column>
         @if (currentHole != null)
         {
-            <Column ColumnSize="ColumnSize.IsHalf">
-            <Card Margin="Margin.Is4.FromBottom">
-                <CardHeader>
-                    <CardTitle Size="4" Alignment="TextAlignment.Center">Hole @currentHole.Number Details</CardTitle>
-                </CardHeader>
-                <CardBody>
-                    <Field Horizontal="true">
-                        <FieldLabel ColumnSize="ColumnSize.Is2">Select Tee Box</FieldLabel>
-                        <FieldBody ColumnSize="ColumnSize.Is4">
-                            <Select TValue="string" Multiple="true">
-                                <SelectItem Value="@("Red")">Red</SelectItem>
-                                <SelectItem Value="@("White")">White</SelectItem>
-                                <SelectItem Value="@("Blue")">Blue</SelectItem>
-                                <SelectItem Value="@("Yellow")">Yellow</SelectItem>
-                                <SelectItem Value="@("Black")">Black</SelectItem>
-                            </Select>
-                        </FieldBody>
-                    </Field>
-                </CardBody>
-            </Card>
-        </Column>
+            <Column ColumnSize="ColumnSize.Is9">
+                <Card Margin="Margin.Is4.FromBottom">
+                    <CardHeader>
+                        <CardTitle Size="4" Alignment="TextAlignment.Center">Hole @currentHole.Number Details</CardTitle>
+                    </CardHeader>
+                    <CardBody>
+                        <Field Horizontal="true">
+                            <FieldLabel>Enter Par</FieldLabel>
+                            <FieldBody>
+                                <NumericEdit TValue="int" Value="currentHolePar" />
+                            </FieldBody>
+                        </Field>
+                        <Field Horizontal="true">
+                            <FieldLabel>Select Tee Box</FieldLabel>
+                            <FieldBody>
+                                <Select TValue="string" Multiple="true" @bind-SelectedValue="@selectedTeeBoxColor">
+                                    <SelectItem Value="@("Red")">Red</SelectItem>
+                                    <SelectItem Value="@("White")">White</SelectItem>
+                                    <SelectItem Value="@("Blue")">Blue</SelectItem>
+                                    <SelectItem Value="@("Yellow")">Yellow</SelectItem>
+                                    <SelectItem Value="@("Black")">Black</SelectItem>
+                                </Select>
+                            </FieldBody>
+                        </Field>
+                        <Field>
+                            <Button class="@selectedTeeBoxColor?.ToLower()">Set Tee Box Location</Button>
+                            @if (currentTeeBoxLocation != null)
+                            {
+                                <TextEdit Text="@("Lat: " + currentTeeBoxLocation.Longitude.ToString())" ReadOnly="true" />
+                                <TextEdit Text="@("Long: " + currentTeeBoxLocation.Latitude.ToString())" ReadOnly="true" />
+                                <TextEdit Text="@("Accuracy: " + currentTeeBoxLocation.Accuracy.ToString())" ReadOnly="true" />
+                            }
+                        </Field>
+                        <Field>
+                            <Button Color="Color.Light">Set Pin Location</Button>
+                            @if (currentPinLocation != null)
+                            {
+                                <TextEdit Text="@("Lat: " + currentPinLocation.Longitude.ToString())" ReadOnly="true" />
+                                <TextEdit Text="@("Long: " + currentPinLocation.Latitude.ToString())" ReadOnly="true" />
+                                <TextEdit Text="@("Accuracy: " + currentPinLocation.Accuracy.ToString())" ReadOnly="true" />
+                            }
+                        </Field>
+                    </CardBody>
+                </Card>
+            </Column>
         }
     </Row>
 }

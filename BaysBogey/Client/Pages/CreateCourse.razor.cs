@@ -28,6 +28,11 @@ namespace BaysBogey.Client.Pages
         protected Course loadedCourse { get; set; }
         protected List<Course> existingCourses { get; set;}
         protected Hole currentHole { get; set; }
+        protected int currentHolePar { get; set; }
+        protected int selectedHoleNumber { get; set; }
+        protected Location currentTeeBoxLocation { get; set; }
+        protected Location currentPinLocation { get; set; }
+        protected string selectedTeeBoxColor { get; set;}
         protected override async Task OnInitializedAsync()
         {
             hideCreateCourseForm = true;
@@ -80,9 +85,16 @@ namespace BaysBogey.Client.Pages
             currentHole.TeeBoxes = new Dictionary<string, Location>();
         }
 
-        protected async Task HoleSelected(Hole hole)
+        protected async Task EditHole()
         {
-            currentHole = loadedCourse.Holes.Where(x => x.Number == hole.Number).FirstOrDefault();
+
+        }
+
+        protected async Task HoleSelected()
+        {
+            currentHole = loadedCourse.Holes.Where(x => x.Number == selectedHoleNumber).FirstOrDefault();
+
+            StateHasChanged();
         }
     }
 }
