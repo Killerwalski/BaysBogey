@@ -11,6 +11,7 @@ using Blazorise;
 using System.Diagnostics;
 using Microsoft.AspNetCore.Components.Web;
 using MongoDB.Bson.Serialization.Serializers;
+using System.Security.Cryptography.X509Certificates;
 
 namespace BaysBogey.Client.Pages
 {
@@ -81,12 +82,24 @@ namespace BaysBogey.Client.Pages
         protected async Task AddNewHole()
         {
             currentHole = new Hole();
+            currentHole.Par = 3;
             currentHole.Number = loadedCourse.Holes.Count + 1;
             currentHole.TeeBoxes = new Dictionary<string, Location>();
         }
 
-        protected async Task EditHole()
+        protected async Task SaveHole()
         {
+            currentHole.Par = currentHolePar;
+
+
+            // Upsert hole to course
+            var existingHole = loadedCourse.Holes.Where(x => x.Number == currentHole.Number).FirstOrDefault();
+            if (existingHole != null)
+                loadedCourse.Holes.Remove(existingHole);
+
+            loadedCourse.Holes.Add(currentHole);
+            var result = await Http.PutAsJsonAsync(Http.BaseAddress + "api/Course/" + loadedCourse.Id, loadedCourse);
+            Debug.WriteLine(result.StatusCode);
 
         }
 
@@ -95,6 +108,21 @@ namespace BaysBogey.Client.Pages
             currentHole = loadedCourse.Holes.Where(x => x.Number == selectedHoleNumber).FirstOrDefault();
 
             StateHasChanged();
+        }
+
+        protected async Task SetTeeBoxLocation()
+        {
+            currentTeeBoxLocation = await LocationService.GetLocationAsync();
+            if (!currentHole.TeeBoxes.ContainsKey(selectedTeeBoxColor))
+                currentHole.TeeBoxes.Add(selectedTeeBoxColor, currentTeeBoxLocation);
+            else
+                currentHole.TeeBoxes[selectedTeeBoxColor] = currentTeeBoxLocation;
+        }
+
+        protected async Task SetPinLocation()
+        {
+            currentPinLocation = await LocationService.GetLocationAsync();
+            currentHole.Pin = currentPinLocation;
         }
     }
 }

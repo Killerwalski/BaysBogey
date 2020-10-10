@@ -44,8 +44,9 @@ namespace BaysBogey.Server.Controllers
 
         // PUT api/<CourseController>/5
         [HttpPut("{id}")]
-        public void Put(string id, [FromBody] Course course)
+        public async Task PutAsync(string id, [FromBody] Course course)
         {
+            await DataService.UpdateCourse(course);
         }
 
         // DELETE api/<CourseController>/5

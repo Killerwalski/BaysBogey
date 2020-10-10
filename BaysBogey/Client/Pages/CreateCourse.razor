@@ -101,7 +101,7 @@
                         <Field Horizontal="true">
                             <FieldLabel>Select Tee Box</FieldLabel>
                             <FieldBody>
-                                <Select TValue="string" Multiple="true" @bind-SelectedValue="@selectedTeeBoxColor">
+                                <Select TValue="string" @bind-SelectedValue="@selectedTeeBoxColor">
                                     <SelectItem Value="@("Red")">Red</SelectItem>
                                     <SelectItem Value="@("White")">White</SelectItem>
                                     <SelectItem Value="@("Blue")">Blue</SelectItem>
@@ -111,7 +111,7 @@
                             </FieldBody>
                         </Field>
                         <Field>
-                            <Button class="@selectedTeeBoxColor?.ToLower()">Set Tee Box Location</Button>
+                            <Button Color="Color.Primary" Clicked="SetTeeBoxLocation">Set Tee Box Location</Button>
                             @if (currentTeeBoxLocation != null)
                             {
                                 <TextEdit Text="@("Lat: " + currentTeeBoxLocation.Longitude.ToString())" ReadOnly="true" />
@@ -120,7 +120,7 @@
                             }
                         </Field>
                         <Field>
-                            <Button Color="Color.Light">Set Pin Location</Button>
+                            <Button Color="Color.Dark" Clicked="SetPinLocation">Set Pin Location</Button>
                             @if (currentPinLocation != null)
                             {
                                 <TextEdit Text="@("Lat: " + currentPinLocation.Longitude.ToString())" ReadOnly="true" />
@@ -129,6 +129,7 @@
                             }
                         </Field>
                     </CardBody>
+                    <Button Color="Color.Secondary" Clicked="SaveHole">Save Hole</Button>
                 </Card>
             </Column>
         }
