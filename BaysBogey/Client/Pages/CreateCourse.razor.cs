@@ -56,14 +56,14 @@ namespace BaysBogey.Client.Pages
             StateHasChanged();
         }
 
-        protected async Task CreateCourseDialog()
+        protected void CreateCourseDialog()
         {
             hideInitialCards = true;
             hideCreateCourseForm = false;
             StateHasChanged();
         }
 
-        protected async Task LoadCourseDialog()
+        protected void LoadCourseDialog()
         {
             hideInitialCards = true;
             hideLoadCourseForm = false;
@@ -79,18 +79,29 @@ namespace BaysBogey.Client.Pages
             StateHasChanged();
         }
 
-        protected async Task AddNewHole()
+        protected void AddNewHole()
         {
             currentHole = new Hole();
-            currentHole.Par = 3;
+            currentHole.Par = 4;
             currentHole.Number = loadedCourse.Holes.Count + 1;
             currentHole.TeeBoxes = new Dictionary<string, Location>();
+            loadedCourse.Holes.Add(currentHole);
+
+            // Initialize hole list
+            if (selectedHoleNumber == 0)
+                selectedHoleNumber = 1;
+
+            selectedHoleNumber++;
+            // Clear out lcoation and pin
+            currentPinLocation = null;
+            currentTeeBoxLocation = null;
+            currentHolePar = 4;
+            StateHasChanged();
         }
 
         protected async Task SaveHole()
         {
             currentHole.Par = currentHolePar;
-
 
             // Upsert hole to course
             var existingHole = loadedCourse.Holes.Where(x => x.Number == currentHole.Number).FirstOrDefault();
@@ -98,16 +109,34 @@ namespace BaysBogey.Client.Pages
                 loadedCourse.Holes.Remove(existingHole);
 
             loadedCourse.Holes.Add(currentHole);
+            loadedCourse.LastUpdated = DateTime.Now;
             var result = await Http.PutAsJsonAsync(Http.BaseAddress + "api/Course/" + loadedCourse.Id, loadedCourse);
             Debug.WriteLine(result.StatusCode);
 
+            
         }
 
-        protected async Task HoleSelected()
+        protected void HoleSelected()
         {
+            if (selectedHoleNumber == 0)
+                selectedHoleNumber++;
             currentHole = loadedCourse.Holes.Where(x => x.Number == selectedHoleNumber).FirstOrDefault();
+            currentHolePar = currentHole.Par;
+            currentPinLocation = currentHole.Pin;
+            selectedTeeBoxColor = "Red";
+            if (currentHole.TeeBoxes.ContainsKey(selectedTeeBoxColor))
+                currentTeeBoxLocation = currentHole.TeeBoxes[selectedTeeBoxColor];
 
             StateHasChanged();
+        }
+
+        protected void TeeBoxSelected(string value)
+        {
+            selectedTeeBoxColor = value;
+            if (currentHole.TeeBoxes.ContainsKey(selectedTeeBoxColor))
+                currentTeeBoxLocation = currentHole.TeeBoxes[selectedTeeBoxColor];
+            else
+                currentTeeBoxLocation = null;
         }
 
         protected async Task SetTeeBoxLocation()

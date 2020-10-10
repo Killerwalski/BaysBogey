@@ -71,7 +71,6 @@
                     <Field Horizontal="true">
                         <FieldBody>
                             <Select TValue="int" @bind-SelectedValue="@selectedHoleNumber">
-                                <SelectItem Value="4">DUMMY</SelectItem>
                                 @foreach (var hole in loadedCourse.Holes)
                                 {
                                     <SelectItem Value="hole.Number">Hole: @hole.Number</SelectItem>
@@ -93,15 +92,15 @@
                     </CardHeader>
                     <CardBody>
                         <Field Horizontal="true">
-                            <FieldLabel>Enter Par</FieldLabel>
+                            <FieldLabel Margin="Margin.Is2">Enter Par</FieldLabel>
                             <FieldBody>
-                                <NumericEdit TValue="int" Value="currentHolePar" />
+                                <NumericEdit TValue="int" @bind-Value="currentHolePar" />
                             </FieldBody>
                         </Field>
                         <Field Horizontal="true">
-                            <FieldLabel>Select Tee Box</FieldLabel>
+                            <FieldLabel Margin="Margin.Is2">Select Tee Box</FieldLabel>
                             <FieldBody>
-                                <Select TValue="string" @bind-SelectedValue="@selectedTeeBoxColor">
+                                <Select TValue="string" SelectedValue="@selectedTeeBoxColor" SelectedValueChanged="@TeeBoxSelected">
                                     <SelectItem Value="@("Red")">Red</SelectItem>
                                     <SelectItem Value="@("White")">White</SelectItem>
                                     <SelectItem Value="@("Blue")">Blue</SelectItem>
