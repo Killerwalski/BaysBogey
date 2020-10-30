@@ -1,6 +1,35 @@
 ﻿@page "/trackround"
 <h3>TrackRound</h3>
 
-@code {
-
-}
+<Row Margin="Margin.Is2">
+    <Column ColumnSize="ColumnSize.IsHalf">
+        <Card Margin="Margin.Is4.FromBottom" Style="height: 100%; flex: 1">
+            <CardHeader>
+                <CardTitle Size="4" Alignment="TextAlignment.Center">Track a round</CardTitle>
+            </CardHeader>
+            <CardBody>
+                <Paragraph>To track a round, load a saved course and begin saving shots</Paragraph>
+                <Paragraph>When you pin the ball, press complete hole</Paragraph>
+                <Paragraph>When you are finished your round, press 'Finish Round'. This will generate a summary of your performance</Paragraph>
+            </CardBody>
+        </Card>
+    </Column>
+    <Column ColumnSize="ColumnSize.IsHalf">
+        <Card Margin="Margin.Is4.FromBottom" Style="height: 100%; flex: 1">
+            <CardHeader>
+                <CardTitle Size="4" Alignment="TextAlignment.Center">Choose an existing course</CardTitle>
+            </CardHeader>
+            <CardBody>
+                <Dropdown>
+                    <DropdownToggle Color="Color.Primary">Select Existing Course</DropdownToggle>
+                    <DropdownMenu>
+                        @foreach (var item in existingCourses)
+                        {
+                            <DropdownItem Clicked="@(e => ExistingCourseChosen(item.Id))"> @item.Name </DropdownItem>
+                        }
+                    </DropdownMenu>
+                </Dropdown>
+            </CardBody>
+        </Card>
+    </Column>
+</Row>

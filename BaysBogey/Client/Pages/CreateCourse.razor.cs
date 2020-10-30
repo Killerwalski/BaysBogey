@@ -72,7 +72,7 @@ namespace BaysBogey.Client.Pages
 
         protected async Task ExistingCourseChosen(string id)
         {
-            Debug.WriteLine("Existing cours eclicked");
+            Debug.WriteLine("Existing course clicked");
             loadedCourse = await Http.GetFromJsonAsync<Course>(Http.BaseAddress + "api/Course/" + id);
             hideLoadCourseForm = true;
             hideModifyCourseForm = false;
