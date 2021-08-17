@@ -28,7 +28,7 @@ namespace BaysBogey.Tests
                 .ForContext<DataTests>();
 
             Configuration = new ConfigurationBuilder()
-                .AddJsonFile("appsettings.Development.json", false, true)
+                .AddJsonFile("appsettings.Development.json", true, true)
                 //.AddJsonFile(Directory.GetParent(Directory.GetCurrentDirectory()).Parent.Parent.Parent.FullName + @"\BaysBogey\Server\appsettings.Development.json", false, true)
                 .Build();
 
